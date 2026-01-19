@@ -16,12 +16,11 @@ h2 {
   text-align: center;
 }
 
-/* DESKTOP SEAT MAP */
 .seat-map {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  margin-top: 20px;
+  margin-top: 20px; /* was 20p */
 }
 
 .row {
@@ -43,7 +42,6 @@ h2 {
   filter: grayscale(100%);
 }
 
-/* AREA COLORS */
 .seat.gold img {
   filter: sepia(1) saturate(4) hue-rotate(20deg);
 }
@@ -52,7 +50,6 @@ h2 {
   filter: grayscale(0.3);
 }
 
-/* STATES */
 .seat.selected img {
   filter: sepia(1) saturate(6) hue-rotate(90deg);
 }
@@ -66,7 +63,6 @@ h2 {
   cursor: not-allowed;
 }
 
-/* MOBILE AREA MAP */
 .area-map {
   display: none;
   margin-top: 20px;
@@ -88,7 +84,6 @@ h2 {
   height: 40px;
 }
 
-/* SUMMARY */
 .summary {
   margin-top: 20px;
   padding: 15px;
@@ -113,12 +108,10 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
+@media (max-width: 768px) { /* was 768p */
   .seat-map {
     display: none;
   }
-
   .area-map {
     display: block;
   }
