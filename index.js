@@ -6,23 +6,21 @@ const confirmBtn = document.getElementById("confirmBtn");
 const SEAT_IMAGE = "gold-seat-available.png";
 let selectedSeats = [];
 
-/* SEAT DATA */
 const layout = {
   gold: {
-    price: 300,
+    price: 30,
     rows: 3,
     cols: 10,
-    booked: ["G1-3", "G2-5", "G3-7"]
+    booked: ["G1-3", "G2-5", "G3-7"],
   },
   silver: {
     price: 200,
     rows: 2,
     cols: 10,
-    booked: ["S1-2", "S2-6"]
-  }
+    booked: ["S1-2", "S2-6"],
+  },
 };
 
-/* RENDER DESKTOP SEATS */
 function renderSeatMap() {
   seatMap.innerHTML = "";
 
@@ -33,6 +31,7 @@ function renderSeatMap() {
 
       for (let c = 1; c <= config.cols; c++) {
         const seatId = `${area[0].toUpperCase()}${r}-${c}`;
+
         const seat = document.createElement("div");
         seat.className = `seat ${area}`;
 
@@ -48,16 +47,16 @@ function renderSeatMap() {
         seat.appendChild(img);
         row.appendChild(seat);
       }
+
       seatMap.appendChild(row);
     }
   });
 }
 
-/* TOGGLE SEAT */
 function toggleSeat(area, seatId, seatDiv) {
   if (seatDiv.classList.contains("booked")) return;
 
-  const index = selectedSeats.findIndex(s => s.seatId === seatId);
+  const index = selectedSeats.findIndex((s) => s.seatId === seatId);
 
   if (index > -1) {
     selectedSeats.splice(index, 1);
@@ -66,7 +65,7 @@ function toggleSeat(area, seatId, seatDiv) {
     selectedSeats.push({
       area,
       seatId,
-      price: layout[area].price
+      price: layout[area].price,
     });
     seatDiv.classList.add("selected");
   }
@@ -74,15 +73,15 @@ function toggleSeat(area, seatId, seatDiv) {
   updateSummary();
 }
 
-/* MOBILE AREA VIEW */
 function renderAreaMap() {
   areaMap.innerHTML = "";
 
   Object.entries(layout).forEach(([area, config]) => {
     const div = document.createElement("div");
     div.className = "area";
+
     div.innerHTML = `
-      <img src="${SEAT_IMAGE}">
+      <img src="${SEAT_IMAGE}" alt="seat"/>
       <div>
         <h3>${area.toUpperCase()}</h3>
         <p>₹${config.price} per seat</p>
@@ -90,11 +89,14 @@ function renderAreaMap() {
     `;
 
     div.onclick = () => {
-      selectedSeats = [{
-        area,
-        seatId: "AUTO",
-        price: config.price
-      }];
+      // For mobile: pick 1 seat automatically (you can change this logic)
+      selectedSeats = [
+        {
+          area,
+          seatId: "AUTO",
+          price: config.price,
+        },
+      ];
       updateSummary();
     };
 
@@ -102,7 +104,6 @@ function renderAreaMap() {
   });
 }
 
-/* SUMMARY */
 function updateSummary() {
   if (selectedSeats.length === 0) {
     summaryText.textContent = "No seats selected";
@@ -110,26 +111,20 @@ function updateSummary() {
     return;
   }
 
-  const total = selectedSeats.reduce((s, x) => s + x.price, 0);
-  const seats = selectedSeats.map(s => s.seatId).join(", ");
+  const total = selectedSeats.reduce((sum, x) => sum + x.price, 0);
+  const seats = selectedSeats.map((s) => s.seatId).join(", ");
 
   summaryText.textContent = `Seats: ${seats} | Total: ₹${total}`;
   confirmBtn.disabled = false;
 }
 
-/* CONFIRM */
 confirmBtn.onclick = () => {
-  alert(
-    "Booking Confirmed!\n\n" +
-    JSON.stringify(selectedSeats, null, 2)
-  );
-
+  alert("Booking confirmed!\n\n" + JSON.stringify(selectedSeats, null, 2));
   selectedSeats = [];
   renderSeatMap();
   updateSummary();
 };
 
-/* INIT */
 renderSeatMap();
 renderAreaMap();
 updateSummary();
